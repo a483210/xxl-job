@@ -1,5 +1,8 @@
 package com.xxl.job.core.handler.annotation;
 
+import com.xxl.job.core.aot.XxlJobReflectiveProcessor;
+import org.springframework.aot.hint.annotation.Reflective;
+
 import java.lang.annotation.*;
 
 /**
@@ -10,6 +13,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
+@Reflective(XxlJobReflectiveProcessor.class)
 public @interface XxlJob {
 
     /**
