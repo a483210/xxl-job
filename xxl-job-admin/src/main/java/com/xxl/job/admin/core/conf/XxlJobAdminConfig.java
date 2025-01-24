@@ -3,9 +3,9 @@ package com.xxl.job.admin.core.conf;
 import com.xxl.job.admin.core.alarm.JobAlarmer;
 import com.xxl.job.admin.core.scheduler.XxlJobScheduler;
 import com.xxl.job.admin.dao.*;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -23,10 +23,10 @@ import java.util.Arrays;
 public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 
     private static XxlJobAdminConfig adminConfig = null;
+
     public static XxlJobAdminConfig getAdminConfig() {
         return adminConfig;
     }
-
 
     // ---------------------- XxlJobScheduler ----------------------
 
@@ -44,7 +44,6 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
     public void destroy() throws Exception {
         xxlJobScheduler.destroy();
     }
-
 
     // ---------------------- XxlJobScheduler ----------------------
 
@@ -69,23 +68,22 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 
     // dao, service
 
-    @Resource
+    @Autowired
     private XxlJobLogDao xxlJobLogDao;
-    @Resource
+    @Autowired
     private XxlJobInfoDao xxlJobInfoDao;
-    @Resource
+    @Autowired
     private XxlJobRegistryDao xxlJobRegistryDao;
-    @Resource
+    @Autowired
     private XxlJobGroupDao xxlJobGroupDao;
-    @Resource
+    @Autowired
     private XxlJobLogReportDao xxlJobLogReportDao;
-    @Resource
+    @Autowired
     private JavaMailSender mailSender;
-    @Resource
+    @Autowired
     private DataSource dataSource;
-    @Resource
+    @Autowired
     private JobAlarmer jobAlarmer;
-
 
     public String getI18n() {
         if (!Arrays.asList("zh_CN", "zh_TC", "en").contains(i18n)) {

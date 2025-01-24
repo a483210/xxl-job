@@ -61,9 +61,8 @@
         </dependency>
         <!-- mysql -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
         <!-- xxl-job-core -->
@@ -97,13 +96,16 @@
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
-                <version>${buildtools.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <mainClass>com.xxl.job.admin.XxlJobAdminApplication</mainClass>
                     <buildArgs>
                         <buildArg>--verbose</buildArg>
                         <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                        <buildArg>-H:+AddAllCharsets</buildArg>
+                        <buildArg>-H:+IncludeAllLocales</buildArg>
+                        <buildArg>-H:+IncludeAllTimeZones</buildArg>
+                        <buildArg>-H:+LocalizationOptimizedMode</buildArg>
                     </buildArgs>
                 </configuration>
             </plugin>
@@ -121,9 +123,12 @@
                             <artifactId>spring-boot-maven-plugin</artifactId>
                             <configuration>
                                 <image>
-                                    <builder>paketobuildpacks/builder:tiny</builder>
+                                    <builder>paketobuildpacks/builder-jammy-tiny:0.0.308</builder>
+                                    <runImage>paketobuildpacks/run-jammy-tiny:0.2.56</runImage>
                                     <env>
+                                        <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>${native-build-args}</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
                                         <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                                        <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
                                     </env>
                                 </image>
                             </configuration>
@@ -136,24 +141,34 @@
                                 </execution>
                             </executions>
                         </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <!-- 使用Oracle GraalVM -->
+        <!-- 需要注意3.15.2是目前最新也是最后一个支持17的镜像版本 这个版本采用Java版本17.0.12和GraalVM版本22.0.2-->
+        <!-- 这个版本存在的问题是对内存的指标支持存在问题，看https://github.com/oracle/graal/issues/4510#issuecomment-2019785377 -->
+        <!-- https://github.com/paketo-buildpacks/oracle/releases -->
+        <!-- https://www.graalvm.org/release-calendar -->
+        <profile>
+            <id>oracle</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
                         <plugin>
-                            <groupId>org.graalvm.buildtools</groupId>
-                            <artifactId>native-maven-plugin</artifactId>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-maven-plugin</artifactId>
                             <configuration>
-                                <classesDirectory>${project.build.outputDirectory}</classesDirectory>
-                                <metadataRepository>
-                                    <enabled>true</enabled>
-                                </metadataRepository>
-                                <requiredVersion>22.3</requiredVersion>
+                                <image>
+                                    <buildpacks>
+                                        <buildpack>docker.io/paketobuildpacks/oracle:3.15.2</buildpack>
+                                        <buildpack>urn:cnb:builder:paketo-buildpacks/java-native-image@11.2.0</buildpack>
+                                    </buildpacks>
+                                    <env>
+                                        <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>${native-build-args.oracle}</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                                    </env>
+                                </image>
                             </configuration>
-                            <executions>
-                                <execution>
-                                    <id>add-reachability-metadata</id>
-                                    <goals>
-                                        <goal>add-reachability-metadata</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
                         </plugin>
                     </plugins>
                 </pluginManagement>

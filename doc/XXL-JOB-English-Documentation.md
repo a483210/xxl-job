@@ -540,7 +540,7 @@ Login in xxl-job-admin,click on the"新建任务" button, configure the job para
 ![create task](https://www.xuxueli.com/doc/static/xxl-job/images/img_ZAsz.png "create task")
 
 #### Step 2：develop “GLUE模式(Java)” job
-Click “GLUE” button on the right of the job to go to GLUE editor view as shown below。“GLUE模式(Java)” mode task has been inited with default task code for printing Hello World。 （ “GLUE模式(Java)” mode task is a java code fragment implements IJobHandler interface,it will be executed in executor,you can use @Resource/@Autowire to inject other java bean instance,if you want to see more info please go to chapter 3）
+Click “GLUE” button on the right of the job to go to GLUE editor view as shown below。“GLUE模式(Java)” mode task has been inited with default task code for printing Hello World。 （ “GLUE模式(Java)” mode task is a java code fragment implements IJobHandler interface,it will be executed in executor,you can use @Autowired/@Autowire to inject other java bean instance,if you want to see more info please go to chapter 3）
 
 ![输入图片说明](https://www.xuxueli.com/doc/static/xxl-job/images/img_Fgql.png "在这里输入图片标题")
 
@@ -579,7 +579,7 @@ On the log console,you can view task execution log on the executor immediately a
     - Cron：Cron expression used to trigger job execution;
     - 运行模式：
         BEAN模式：job was maintained on the side of executor by  as JobHandler instance,it will be executed accordate with "JobHandler" properties.
-        GLUE模式(Java)：task source code is maintened in the schedule center,it must implement IJobHandler and explain by "groovy" in the executor instance,inject other bean instace by annotation @Resource/@Autowire.
+        GLUE模式(Java)：task source code is maintened in the schedule center,it must implement IJobHandler and explain by "groovy" in the executor instance,inject other bean instace by annotation @Autowired/@Autowire.
         GLUE模式(Shell)：it’s source code is a shell script and maintained in the schedule center.
         GLUE模式(Python)：it’s source code is a python script and maintained in the schedule center.
     - JobHandler：it’s used in  "BEAN模式",it’s instance is defined by annotation @JobHandler on the JobHandler class name.

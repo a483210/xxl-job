@@ -10,6 +10,12 @@
     <description>A distributed task scheduling framework.</description>
     <url>https://www.xuxueli.com/</url>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.1</version>
+    </parent>
+
     <modules>
         <module>xxl-job-core</module>
         <module>xxl-job-admin</module>
@@ -20,29 +26,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.test.skip>true</maven.test.skip>
 
-        <netty-all.version>4.1.87.Final</netty-all.version>
-        <gson.version>2.9.1</gson.version>
+        <!-- -march=native 这个配置可以提供最佳性能，但是镜像只能运行在相同的CPU的架构机器上，线上一般建议启用 -->
+        <native-build-args>
+            -H:+AddAllCharsets -H:+IncludeAllLocales -H:+IncludeAllTimeZones -H:+LocalizationOptimizedMode
+        </native-build-args>
+        <native-build-args.oracle>
+            -H:+AddAllCharsets -H:+IncludeAllLocales -H:+IncludeAllTimeZones -H:+LocalizationOptimizedMode --gc=G1
+        </native-build-args.oracle>
 
-        <spring.version>6.0.4</spring.version>
-        <spring-boot.version>3.0.2</spring-boot.version>
+        <build-image.tiny>paketobuildpacks/builder-jammy-tiny:0.0.308</build-image.tiny>
+        <build-image-run.tiny>paketobuildpacks/run-jammy-tiny:0.2.56</build-image-run.tiny>
+        <buildpack-image.oracle>docker.io/paketobuildpacks/oracle:3.15.2</buildpack-image.oracle>
+        <buildpack-image.native>urn:cnb:builder:paketo-buildpacks/java-native-image@11.2.0</buildpack-image.native>
 
-        <mybatis-spring-boot-starter.version>3.0.1</mybatis-spring-boot-starter.version>
-        <mysql-connector-java.version>8.0.32</mysql-connector-java.version>
+        <spring.version>6.0.10</spring.version>
+        <spring-boot.version>3.1.1</spring-boot.version>
 
-        <slf4j-api.version>2.0.6</slf4j-api.version>
-        <junit-jupiter.version>5.9.2</junit-jupiter.version>
-        <jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
-
-        <groovy.version>4.0.7</groovy.version>
-
-        <buildtools.version>0.9.19</buildtools.version>
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.4.0</maven-javadoc-plugin.version>
-        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+        <mybatis-spring-boot-starter.version>3.0.2</mybatis-spring-boot-starter.version>
     </properties>
 
     <build>
@@ -73,7 +77,6 @@
     </developers>
 
     <profiles>
-
         <profile>
             <id>release</id>
             <build>
@@ -140,5 +143,4 @@
             </distributionManagement>
         </profile>
     </profiles>
-
 </project>

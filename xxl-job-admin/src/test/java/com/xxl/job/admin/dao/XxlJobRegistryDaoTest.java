@@ -1,8 +1,8 @@
 package com.xxl.job.admin.dao;
 
 import com.xxl.job.admin.core.model.XxlJobRegistry;
-import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
@@ -12,11 +12,11 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class XxlJobRegistryDaoTest {
 
-    @Resource
+    @Autowired
     private XxlJobRegistryDao xxlJobRegistryDao;
 
     @Test
-    public void test(){
+    public void test() {
         int ret = xxlJobRegistryDao.registryUpdate("g1", "k1", "v1", new Date());
         if (ret < 1) {
             ret = xxlJobRegistryDao.registrySave("g1", "k1", "v1", new Date());

@@ -1,6 +1,6 @@
 package com.xxl.job.admin.controller.interceptor;
 
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,9 +13,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Resource
+    @Autowired
     private PermissionInterceptor permissionInterceptor;
-    @Resource
+    @Autowired
     private CookieInterceptor cookieInterceptor;
 
     @Override

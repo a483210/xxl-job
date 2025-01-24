@@ -1,8 +1,8 @@
 package com.xxl.job.admin.dao;
 
 import com.xxl.job.admin.core.model.XxlJobGroup;
-import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
@@ -11,11 +11,11 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class XxlJobGroupDaoTest {
 
-    @Resource
+    @Autowired
     private XxlJobGroupDao xxlJobGroupDao;
 
     @Test
-    public void test(){
+    public void test() {
         List<XxlJobGroup> list = xxlJobGroupDao.findAll();
 
         List<XxlJobGroup> list2 = xxlJobGroupDao.findByAddressType(0);
